@@ -99,7 +99,7 @@ class _ListProductWidgetState extends State<ListProductWidget> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Row(
@@ -112,16 +112,16 @@ class _ListProductWidgetState extends State<ListProductWidget> {
                                     context.read<CheckoutBloc>().add(
                                         RemoveFromCartEvent(product: product));
                                   },
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.add_shopping_cart,
                                     size: 20,
                                     color: Color(0xffEE4D2D),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 2,
                                 ),
-                                Text(
+                                const Text(
                                   "Beli",
                                   style: TextStyle(
                                     color: Color(0xffEE4D2D),
@@ -130,19 +130,38 @@ class _ListProductWidgetState extends State<ListProductWidget> {
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 8,
                             ),
                             Row(
                               children: [
-                                Icon(
-                                  Icons.remove_circle_outline,
-                                  size: 18,
-                                  color: Color(0xffEE4D2D),
+                                InkWell(
+                                  onTap: () {
+                                    context.read<CheckoutBloc>().add(
+                                        RemoveFromCartEvent(product: product));
+                                  },
+                                  child: const Icon(
+                                    Icons.remove_circle_outline,
+                                    size: 18,
+                                    color: Color(0xffEE4D2D),
+                                  ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 5),
-                                  child: Text('0'),
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  child:
+                                      BlocBuilder<CheckoutBloc, CheckoutState>(
+                                    builder: (context, state) {
+                                      if (state is CheckoutLoaded) {
+                                        final countItem = state.items
+                                            .where((element) =>
+                                                element.id == product.id)
+                                            .length;
+                                        return Text('$countItem');
+                                      }
+                                      return const Text('0');
+                                    },
+                                  ),
                                 ),
                                 InkWell(
                                   onTap: () {
@@ -150,7 +169,7 @@ class _ListProductWidgetState extends State<ListProductWidget> {
                                         .read<CheckoutBloc>()
                                         .add(AddToCartEvent(product: product));
                                   },
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.add_circle_outline,
                                     size: 18,
                                     color: Color(0xffEE4D2D),

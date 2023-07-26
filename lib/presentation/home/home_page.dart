@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_fic6_ecommerce_tv/presentation/cart/cart_page.dart';
 import 'package:flutter_fic6_ecommerce_tv/presentation/home/widgets/banner_widget.dart';
 import 'package:flutter_fic6_ecommerce_tv/presentation/home/widgets/list_category_widget.dart';
 import 'package:flutter_fic6_ecommerce_tv/presentation/home/widgets/list_product_widget.dart';
@@ -25,6 +26,7 @@ class _HomePageState extends State<HomePage> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: AppBar(
+          automaticallyImplyLeading: false,
           flexibleSpace: Container(
             decoration: const BoxDecoration(color: Color(0xffEE4D2D)),
           ),
@@ -187,24 +189,32 @@ class _HomePageState extends State<HomePage> {
                       // elevation: 0,
                       badgeContent: Text(
                         '${state.items.length}',
-                        style: TextStyle(color: Color(0xffEE4D2D)),
+                        style: const TextStyle(color: Color(0xffEE4D2D)),
                       ),
                       // badgeColor: Colors.white,
-                      child: const Icon(
-                        Icons.shopping_cart_outlined,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return const CartPage();
+                          }));
+                        },
+                        child: const Icon(
+                          Icons.shopping_cart_outlined,
+                        ),
                       ),
                     );
                   }
-                  return badges.Badge(
-                    badgeStyle: const badges.BadgeStyle(
+                  return const badges.Badge(
+                    badgeStyle: badges.BadgeStyle(
                         elevation: 0, badgeColor: Colors.white),
                     // elevation: 0,
                     badgeContent: Text(
-                      '4',
+                      '0',
                       style: TextStyle(color: Color(0xffEE4D2D)),
                     ),
                     // badgeColor: Colors.white,
-                    child: const Icon(
+                    child: Icon(
                       Icons.shopping_cart_outlined,
                     ),
                   );

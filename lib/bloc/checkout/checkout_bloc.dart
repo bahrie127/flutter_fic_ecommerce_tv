@@ -1,6 +1,5 @@
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/responses/list_product_response_model.dart';
 
@@ -20,7 +19,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
       final currentState = state as CheckoutLoaded;
       currentState.items.remove(event.product);
       emit(CheckoutLoading());
-      emit(CheckoutLoaded(items: [...currentState.items]));
+      emit(CheckoutLoaded(items: currentState.items));
     });
   }
 }
