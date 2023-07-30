@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fic6_ecommerce_tv/bloc/login/login_bloc.dart';
+import 'package:flutter_fic6_ecommerce_tv/bloc/order/order_bloc.dart';
+import 'package:flutter_fic6_ecommerce_tv/bloc/register/register_bloc.dart';
 import 'package:flutter_fic6_ecommerce_tv/data/datasources/auth_remote_datasource.dart';
+import 'package:flutter_fic6_ecommerce_tv/data/datasources/order_remote_datasource.dart';
 import 'package:flutter_fic6_ecommerce_tv/data/datasources/product_remote_datasource.dart';
 import 'package:flutter_fic6_ecommerce_tv/presentation/home/home_page.dart';
 
@@ -27,6 +30,12 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => LoginBloc(AuthRemoteDatasource()),
+        ),
+        BlocProvider(
+          create: (context) => OrderBloc(OrderRemoteDatasource()),
+        ),
+        BlocProvider(
+          create: (context) => RegisterBloc(AuthRemoteDatasource()),
         ),
       ],
       child: MaterialApp(

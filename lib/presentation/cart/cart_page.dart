@@ -7,6 +7,7 @@ import 'package:flutter_fic6_ecommerce_tv/presentation/checkout/checkout_page.da
 
 import '../../bloc/checkout/checkout_bloc.dart';
 import '../../common/global_variables.dart';
+import '../account/account_page.dart';
 import '../home/home_page.dart';
 
 class CartPage extends StatefulWidget {
@@ -528,8 +529,16 @@ class _CartPageState extends State<CartPage> {
                   //   ),
                   // );
                 },
-                child: const Icon(
-                  Icons.person_outline_outlined,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return const AccountPage();
+                    }));
+                  },
+                  child: const Icon(
+                    Icons.person_outline_outlined,
+                  ),
                 ),
               ),
             ),

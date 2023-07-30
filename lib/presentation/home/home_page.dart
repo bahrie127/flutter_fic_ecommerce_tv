@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_fic6_ecommerce_tv/presentation/account/account_page.dart';
 import 'package:flutter_fic6_ecommerce_tv/presentation/cart/cart_page.dart';
 import 'package:flutter_fic6_ecommerce_tv/presentation/home/widgets/banner_widget.dart';
 import 'package:flutter_fic6_ecommerce_tv/presentation/home/widgets/list_category_widget.dart';
@@ -160,8 +161,15 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              child: const Icon(
-                Icons.person_outline_outlined,
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                    return const AccountPage();
+                  }));
+                },
+                child: const Icon(
+                  Icons.person_outline_outlined,
+                ),
               ),
             ),
             label: '',

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fic6_ecommerce_tv/bloc/login/login_bloc.dart';
+import 'package:flutter_fic6_ecommerce_tv/bloc/register/register_bloc.dart';
 import 'package:flutter_fic6_ecommerce_tv/data/datasources/auth_local_datasource.dart';
 import 'package:flutter_fic6_ecommerce_tv/data/models/login_request_model.dart';
+import 'package:flutter_fic6_ecommerce_tv/data/models/register_request_model.dart';
 
 import '../../common/custom_button.dart';
 import '../../common/custom_textfield.dart';
@@ -88,12 +90,55 @@ class _AuthPageState extends State<AuthPage> {
                           hintText: 'Password',
                         ),
                         const SizedBox(height: 10),
-                        CustomButton(
-                          text: 'Sign Up',
-                          onTap: () {
-                            if (_signUpFormKey.currentState!.validate()) {
-                              // signUpUser();
-                            }
+                        BlocConsumer<RegisterBloc, RegisterState>(
+                          listener: (context, state) {
+                            state.maybeWhen(
+                              orElse: () {},
+                              error: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: const Text('Register Error'),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              },
+                              loaded: (model) async {
+                                await AuthLocalDatasource().saveAuthData(model);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return const HomePage();
+                                    },
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          builder: (context, state) {
+                            return state.maybeWhen(
+                              orElse: () {
+                                return CustomButton(
+                                  text: 'Sign Up',
+                                  onTap: () {
+                                    if (_signUpFormKey.currentState!
+                                        .validate()) {
+                                      final requestModel = RegisterRequestModel(
+                                        name: _nameController.text,
+                                        password: _passwordController.text,
+                                        email: _emailController.text,
+                                        username: _nameController.text,
+                                      );
+
+                                      context.read<RegisterBloc>().add(
+                                          RegisterEvent.register(requestModel));
+                                    }
+                                  },
+                                );
+                              },
+                              loading: () => const Center(
+                                  child: CircularProgressIndicator()),
+                            );
                           },
                         )
                       ],
@@ -180,14 +225,6 @@ class _AuthPageState extends State<AuthPage> {
                                       .read<LoginBloc>()
                                       .add(DoLoginEvent(model: model));
                                 }
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) {
-                                //       return HomePage();
-                                //     },
-                                //   ),
-                                // );
                               },
                             );
                           },
@@ -196,6 +233,31 @@ class _AuthPageState extends State<AuthPage> {
                     ),
                   ),
                 ),
+              const SizedBox(
+                height: 16,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xffEE4D2D)),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const HomePage();
+                      }));
+                    },
+                    child: const Text(
+                      'Continue as a Guest',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
