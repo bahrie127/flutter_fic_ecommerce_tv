@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_fic6_ecommerce_tv/bloc/list_order/list_order_bloc.dart';
 import 'package:flutter_fic6_ecommerce_tv/data/datasources/auth_local_datasource.dart';
 import 'package:flutter_fic6_ecommerce_tv/presentation/auth/auth_page.dart';
 
@@ -26,6 +27,7 @@ class _AccountPageState extends State<AccountPage> {
   @override
   void initState() {
     getUser();
+    context.read<ListOrderBloc>().add(const ListOrderEvent.get());
     super.initState();
   }
 
@@ -58,8 +60,8 @@ class _AccountPageState extends State<AccountPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ElevatedButton(
-                    onPressed: () {}, child: const Text('List Order')),
+                // ElevatedButton(
+                //     onPressed: () {}, child: const Text('List Order')),
                 ElevatedButton(
                     onPressed: () async {
                       await AuthLocalDatasource().removeAuthData();
@@ -71,7 +73,42 @@ class _AccountPageState extends State<AccountPage> {
                     child: const Text('Logout')),
               ],
             ),
-          )
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          const Divider(
+            thickness: 2,
+            height: 1,
+          ),
+          const Text('List Order'),
+          Expanded(child: BlocBuilder<ListOrderBloc, ListOrderState>(
+            builder: (context, state) {
+              return state.maybeWhen(
+                orElse: () {
+                  return const Center(
+                    child: Text('No Orders'),
+                  );
+                },
+                loaded: (data) {
+                  return ListView.builder(
+                    itemBuilder: (context, index) {
+                      final order = data.data![index];
+                      return Card(
+                        elevation: 5,
+                        shadowColor: const Color(0xffEE4D2D),
+                        child: ListTile(
+                          title: Text('Order#${order.id}'),
+                          subtitle: Text('${order.attributes!.totalPrice}'),
+                        ),
+                      );
+                    },
+                    itemCount: data.data!.length,
+                  );
+                },
+              );
+            },
+          ))
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

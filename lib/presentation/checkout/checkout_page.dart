@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fic6_ecommerce_tv/bloc/order/order_bloc.dart';
 import 'package:flutter_fic6_ecommerce_tv/common/snap_widget.dart';
+import 'package:flutter_fic6_ecommerce_tv/data/datasources/auth_local_datasource.dart';
 import 'package:flutter_fic6_ecommerce_tv/data/models/order_request_model.dart';
 
 import '../../bloc/checkout/checkout_bloc.dart';
@@ -102,7 +103,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 return ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xffEE4D2D)),
-                  onPressed: () {
+                  onPressed: () async {
+                    final userId = await AuthLocalDatasource().getUserId();
                     final total = state.items
                         .fold(0, (sum, item) => sum + item.attributes!.price!);
                     final data = Data(
@@ -118,6 +120,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       courierName: 'JNE',
                       shippingCost: 22000,
                       statusOrder: 'waitingPayment',
+                      userId: userId,
                     );
                     final requestModel = OrderRequestModel(data: data);
                     context

@@ -6,6 +6,7 @@ import 'package:flutter_fic6_ecommerce_tv/presentation/home/widgets/banner_widge
 import 'package:flutter_fic6_ecommerce_tv/presentation/home/widgets/list_category_widget.dart';
 import 'package:flutter_fic6_ecommerce_tv/presentation/home/widgets/list_product_widget.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:flutter_fic6_ecommerce_tv/presentation/search/search_page.dart';
 
 import '../../bloc/checkout/checkout_bloc.dart';
 import '../../common/global_variables.dart';
@@ -21,6 +22,8 @@ class _HomePageState extends State<HomePage> {
   int _page = 0;
   double bottomBarWidth = 42;
   double bottomBarBorderWidth = 5;
+
+  final TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +45,13 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: BorderRadius.circular(10),
                     elevation: 3,
                     child: TextFormField(
-                      onFieldSubmitted: (_) {},
+                      controller: searchController,
+                      onFieldSubmitted: (_) {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return SearchPage(search: searchController.text);
+                        }));
+                      },
                       decoration: InputDecoration(
                         prefixIcon: InkWell(
                           onTap: () {},
@@ -163,7 +172,7 @@ class _HomePageState extends State<HomePage> {
               ),
               child: InkWell(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return const AccountPage();
                   }));
                 },
