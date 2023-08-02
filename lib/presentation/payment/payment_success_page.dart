@@ -18,14 +18,13 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
         context: context,
         dialogType: DialogType.success,
         animType: AnimType.rightSlide,
-        title: 'Payment Success',
+        title: 'Pembayaran Sukses',
         desc: 'Selamat Pembayaran Berhasil dilakukan',
         btnOkOnPress: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return const HomePage();
           }));
         },
-      
       ).show();
     });
   }
